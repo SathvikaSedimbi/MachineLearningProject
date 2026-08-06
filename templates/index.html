@@ -21,6 +21,13 @@
                     Data Loading
                 </a>
             </li>
+            <li>
+                <a href="{{ url_for('eda_page') }}"
+                   class="menu-item {% if active == 'eda' %}active{% endif %}">
+                    EDA
+                </a>
+            </li>
+
             <li class="menu-item disabled">Preprocessing (coming soon)</li>
             <li class="menu-item disabled">Model Training (coming soon)</li>
             <li class="menu-item disabled">Prediction (coming soon)</li>
@@ -44,7 +51,7 @@
             {% if summary %}
                 <table class="summary-table">
                     <tr><td>Rows</td><td>{{ summary.n_rows }}</td></tr>
-                    <tr><td>Columns</td><td>{{ summary.n_cols }}</td></tr>
+                    <tr><td>Columns</td><td>{{ summary.n_columns }}</td></tr>
                 </table>
 
                 <h3>Column Info</h3>
