@@ -366,6 +366,111 @@ button:hover{
    RESPONSIVE
 ============================== */
 
+/* ==============================
+   PREPROCESSING TABS
+============================== */
+
+.tab-bar,
+.sub-tab-bar{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.tab-btn,
+.sub-tab-btn{
+    background:#e9f0fa;
+    color:#1f3a5f;
+    border:1px solid #dbe5f2;
+    padding:10px 16px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.tab-btn.active,
+.sub-tab-btn.active{
+    background:#1f3a5f;
+    color:white;
+    border-color:#1f3a5f;
+    font-weight:600;
+}
+
+.tab-panel,
+.sub-panel{
+    display:none;
+}
+
+.tab-panel.active,
+.sub-panel.active{
+    display:block;
+}
+
+.callout{
+    background:#f7f9fc;
+    border-left:5px solid #3d6aa3;
+    border-radius:10px;
+    padding:16px 18px;
+    margin:15px 0 20px;
+}
+
+.callout p{
+    color:#666;
+    margin-top:8px;
+}
+
+.tag{
+    display:inline-block;
+    background:#e9f0fa;
+    color:#1f3a5f;
+    padding:3px 10px;
+    border-radius:6px;
+    font-size:12px;
+    margin:2px;
+}
+
+.split-bar-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:10px 0;
+}
+
+.split-bar-label{
+    width:70px;
+    font-weight:600;
+    color:#1f3a5f;
+}
+
+.split-bar-track{
+    flex:1;
+    height:14px;
+    background:#dbe5f2;
+    border-radius:7px;
+    overflow:hidden;
+}
+
+.split-bar-fill{
+    height:100%;
+    background:#3d6aa3;
+}
+
+.split-bar-fill.muted{
+    background:#93a7c4;
+}
+
+.split-bar-pct{
+    width:45px;
+    text-align:right;
+    font-weight:600;
+    color:#1f3a5f;
+}
+
+.split-bar-pct.muted{
+    color:#666;
+}
+
 @media(max-width:900px){
 
     .layout{

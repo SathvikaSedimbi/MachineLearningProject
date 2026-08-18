@@ -31,8 +31,11 @@
                 </a>
             </li>
 
-            <li class="menu-item disabled">
-                Preprocessing (Coming Soon)
+            <li>
+                <a href="{{ url_for('preprocessing_page') }}"
+                   class="menu-item {% if active == 'preprocessing' %}active{% endif %}">
+                    Preprocessing
+                </a>
             </li>
 
             <li class="menu-item disabled">
