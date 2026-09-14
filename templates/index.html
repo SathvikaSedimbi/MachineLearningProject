@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Placement Prediction Project</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -13,92 +14,144 @@
 
 <div class="layout">
     <!-- Left panel -->
-    <nav class="sidebar">
-        <ul>
-            <li>
-                <a href="{{ url_for('data_loading') }}"
-                   class="menu-item {% if active == 'data-loading' %}active{% endif %}">
-                    Data Loading
-                </a>
-            </li>
-            <li>
-                <a href="{{ url_for('eda_page') }}"
-                   class="menu-item {% if active == 'eda' %}active{% endif %}">
-                    EDA
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ url_for('preprocessing_page') }}"
-                   class="menu-item {% if active == 'preprocessing' %}active{% endif %}">
-                    Preprocessing
-                </a>
-            </li>
-            <li class="menu-item disabled">Model Training (coming soon)</li>
-            <li class="menu-item disabled">Prediction (coming soon)</li>
-        </ul>
-    </nav>
+    {% include '_sidebar.html' %}
 
     <!-- Main content -->
     <main class="content">
 
         {% if active == 'none' %}
-            <p>Select an option from the left panel to get started.</p>
+            <div class="eda-section">
+                <h2>Welcome to Placement Prediction Analytics</h2>
+                <p>Select an option from the sidebar to inspect the dataset, perform preprocessing, or train machine learning models.</p>
+                
+                <div class="grid-4col" style="margin-top:20px;">
+                    <div class="info-card">
+                        <h3>Dataset</h3>
+                        <p>50,000</p>
+                        <span style="color:#666;font-size:13px;">Student Records</span>
+                    </div>
+                    <div class="info-card">
+                        <h3>Classification</h3>
+                        <p>Placement</p>
+                        <span style="color:#666;font-size:13px;">Placed vs Not Placed</span>
+                    </div>
+                    <div class="info-card">
+                        <h3>Regression</h3>
+                        <p>Package</p>
+                        <span style="color:#666;font-size:13px;">Salary Prediction (LPA)</span>
+                    </div>
+                    <div class="info-card">
+                        <h3>Clustering</h3>
+                        <p>K-Means</p>
+                        <span style="color:#666;font-size:13px;">Unsupervised Grouping</span>
+                    </div>
+                </div>
+            </div>
         {% endif %}
 
         {% if active == 'data-loading' %}
-            <h2>Data Loading</h2>
+            <div class="eda-section">
+                <h2>Dataset Information & Summary</h2>
 
-            {% if error %}
-                <div class="error">{{ error }}</div>
-            {% endif %}
+                {% if error %}
+                    <div class="error">{{ error }}</div>
+                {% endif %}
 
-            {% if summary %}
-                <table class="summary-table">
-                    <tr><td>Rows</td><td>{{ summary.n_rows }}</td></tr>
-                    <tr><td>Columns</td><td>{{ summary.n_columns }}</td></tr>
-                </table>
+                {% if summary %}
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h3>Total Rows</h3>
+                            <p>{{ summary.n_rows }}</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>Total Columns</h3>
+                            <p>{{ summary.n_columns }}</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>Total Cells</h3>
+                            <p>{{ summary.total_cells }}</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>Memory Usage</h3>
+                            <p>{{ summary.memory_usage_kb }} KB</p>
+                        </div>
+                    </div>
 
-                <h3>Column Info</h3>
-                <div class="table-wrapper">
-                    <table class="data-table">
-                        <thead>
-                            <tr><th>Column</th><th>Dtype</th><th>Missing Values</th></tr>
-                        </thead>
-                        <tbody>
-                        {% for col in summary.columns %}
-                            <tr>
-                                <td>{{ col }}</td>
-                                <td>{{ summary.dtypes[col] }}</td>
-                                <td>{{ summary.missing_counts[col] }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
-                <h3>Preview (first 10 rows)</h3>
-                <div class="table-wrapper">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
+                    <h3 style="margin-top:25px;color:#1f3a5f;">Column Information & Data Quality</h3>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Data Type</th>
+                                    <th>Missing Count</th>
+                                    <th>Missing %</th>
+                                    <th>Unique Values</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             {% for col in summary.columns %}
-                                <th>{{ col }}</th>
+                                <tr>
+                                    <td><strong>{{ col }}</strong></td>
+                                    <td>{{ summary.dtypes[col] }}</td>
+                                    <td>{{ summary.missing_counts[col] }}</td>
+                                    <td>{{ summary.missing_percentages[col] }}%</td>
+                                    <td>{{ summary.unique_values[col] }}</td>
+                                </tr>
                             {% endfor %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for row in summary.preview %}
-                            <tr>
-                            {% for col in summary.columns %}
-                                <td>{{ row[col] }}</td>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {% if summary.numerical_summary %}
+                    <h3 style="margin-top:25px;color:#1f3a5f;">Numerical Features Summary</h3>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    {% for col in summary.numerical_summary.keys() %}
+                                        <th>{{ col }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for stat in ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max'] %}
+                                <tr>
+                                    <td><strong>{{ stat }}</strong></td>
+                                    {% for col in summary.numerical_summary.keys() %}
+                                        <td>{{ summary.numerical_summary[col][stat] }}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+
+                    <h3 style="margin-top:25px;color:#1f3a5f;">Dataset Preview (first 10 rows)</h3>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                {% for col in summary.columns %}
+                                    <th>{{ col }}</th>
+                                {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for row in summary.preview %}
+                                <tr>
+                                {% for col in summary.columns %}
+                                    <td>{{ row[col] }}</td>
+                                {% endfor %}
+                                </tr>
                             {% endfor %}
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
         {% endif %}
 
     </main>

@@ -15,38 +15,7 @@
 <div class="layout">
 
     <!-- Sidebar -->
-    <nav class="sidebar">
-        <ul>
-            <li>
-                <a href="{{ url_for('data_loading') }}"
-                   class="menu-item {% if active == 'data-loading' %}active{% endif %}">
-                    Data Loading
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ url_for('eda_page') }}"
-                   class="menu-item {% if active == 'eda' %}active{% endif %}">
-                    EDA
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ url_for('preprocessing_page') }}"
-                   class="menu-item {% if active == 'preprocessing' %}active{% endif %}">
-                    Preprocessing
-                </a>
-            </li>
-
-            <li class="menu-item disabled">
-                Model Training (Coming Soon)
-            </li>
-
-            <li class="menu-item disabled">
-                Prediction (Coming Soon)
-            </li>
-        </ul>
-    </nav>
+    {% include '_sidebar.html' %}
 
     <!-- Main Content -->
     <main class="content">
